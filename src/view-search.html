@@ -1,0 +1,54 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-jsonp-library/iron-jsonp-library.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="weather-card.html">
+
+</head><body><dom-module id="view-search">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+
+    <iron-jsonp-library library-url="[[weatherUrl]]" notify-event="weather-load" library-error-message="{{error}}" library-loaded="{{loaded}}"></iron-jsonp-library>
+
+    <div class="card">
+      <h1>Find a location</h1>
+      <paper-input id="input" label="City name" type="search" placeholder="search for a city" results="5"></paper-input>
+    </div>
+
+    <template is="dom-if" if="[[loaded]]">
+      <weather-card data="[[resultData]]"></weather-card>
+    </template>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'view-search',
+      properties: {
+        "resultData": Object,
+        "weatherUrl": String
+      },
+      listeners: {
+        'weather-load': 'gotData',
+        'change': 'search'
+      },
+      gotData: function (data) {
+        if (data.detail && data.detail.length > 0) {
+          this.resultData = data.detail[0];
+        } else {
+          this.loaded = false;
+        }
+      },
+      search: function (e) {
+        let escaped = encodeURIComponent(this.$.input.value);
+        this.weatherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${escaped}&appid=599c15706c827e88d93e4505af822c68&callback=%%callback%%`;
+      }
+    });
+  </script>
+</dom-module>
+</body></html>
