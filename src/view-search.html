@@ -1,10 +1,4 @@
-<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-jsonp-library/iron-jsonp-library.html">
-<link rel="import" href="../bower_components/paper-input/paper-input.html">
-<link rel="import" href="shared-styles.html">
-<link rel="import" href="weather-card.html">
-
-</head><body><dom-module id="view-search">
+<html><head><meta charset="UTF-8"><link rel="import" href="my-app.html"></head><body><dom-module id="view-search">
   <template>
     <style include="shared-styles">
       :host {
@@ -26,29 +20,6 @@
     </template>
   </template>
 
-  <script>
-    Polymer({
-      is: 'view-search',
-      properties: {
-        "resultData": Object,
-        "weatherUrl": String
-      },
-      listeners: {
-        'weather-load': 'gotData',
-        'change': 'search'
-      },
-      gotData: function (data) {
-        if (data.detail && data.detail.length > 0) {
-          this.resultData = data.detail[0];
-        } else {
-          this.loaded = false;
-        }
-      },
-      search: function (e) {
-        let escaped = encodeURIComponent(this.$.input.value);
-        this.weatherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${escaped}&appid=599c15706c827e88d93e4505af822c68&callback=%%callback%%`;
-      }
-    });
-  </script>
+  <script>Polymer({is:"view-search",properties:{resultData:Object,weatherUrl:String},listeners:{"weather-load":"gotData",change:"search"},gotData:function(e){e.detail&&e.detail.length>0?this.resultData=e.detail[0]:this.loaded=!1},search:function(e){var a=encodeURIComponent(this.$.input.value);this.weatherUrl="http://api.openweathermap.org/data/2.5/weather?q="+a+"&appid=599c15706c827e88d93e4505af822c68&callback=%%callback%%"}});</script>
 </dom-module>
 </body></html>
